@@ -2,6 +2,7 @@
 import { CContainer, CFormCheck } from "@coreui/react";
 import { TEST_VIDEO_URL, POSTER_URL } from "@/app/const";
 import { useEffect, useRef } from "react";
+import { log } from "console";
 
 export default function WechatVideoAutoPlayExample() {
   const debuglogs = useRef<HTMLDivElement>(null);
@@ -25,11 +26,15 @@ export default function WechatVideoAutoPlayExample() {
       });
     }
 
+    //check if WeixinJSBridge exist and is ready
     if ((window as any).WeixinJSBridge) {
       logPageDebug("WeixinJSBridge found");
       doPlay();
     } else {
       logPageDebug("WeixinJSBridge not found");
+      logPageDebug(
+        "add event listener for WeixinJSBridgeReady incase it's not ready yet"
+      );
       document.addEventListener(
         "WeixinJSBridgeReady",
         function () {
@@ -37,7 +42,6 @@ export default function WechatVideoAutoPlayExample() {
         },
         false
       );
-      doPlay();
     }
   }, []);
 
@@ -67,6 +71,7 @@ export default function WechatVideoAutoPlayExample() {
             poster={POSTER_URL}
           ></video>
         </CContainer>
+        <h2>debug logs:</h2>
         <div ref={debuglogs}></div>
       </CContainer>
     </main>
