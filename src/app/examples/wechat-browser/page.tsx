@@ -144,7 +144,7 @@ export default function WechatVideoAutoPlayExample() {
     doPlay();
   } else {
     // add event listener for WeixinJSBridgeReady 
-    // in case it's not ready yet, this is mainly for android devices
+    // in case it's not ready yet
     logPageDebug(
       "add event listener for WeixinJSBridgeReady in case it's not ready yet"
     );
