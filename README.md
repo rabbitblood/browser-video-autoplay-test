@@ -14,7 +14,7 @@ this project is inspired when I have struggled to make the video auto play in We
 
 1.open demo website in your testing browser
 
-[https://wechat-browser-video-autoplay-test.vercel.app/](https://wechat-browser-video-autoplay-test.vercel.app/)
+[https://browser-video-inline-autoplay-test.vercel.app/](https://browser-video-inline-autoplay-test.vercel.app/)
 
 2.test with local server
 
