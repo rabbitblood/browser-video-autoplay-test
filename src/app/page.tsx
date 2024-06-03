@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { TEST_VIDEO_URL, POSTER_URL } from "./const";
 
 export default function Home() {
+  const [controls, setControls] = useState(false);
   const [autoplay, setAutoplay] = useState(true);
   const [muted, setMuted] = useState(true);
   const [loop, setLoop] = useState(true);
@@ -19,6 +20,13 @@ export default function Home() {
   ] = useState(false);
 
   useEffect(() => {
+    const controls = localStorage.getItem("controls");
+    if (controls) {
+      setControls(controls === "true");
+    } else {
+      setControls(false);
+    }
+
     const autoplay = localStorage.getItem("autoplay");
     if (autoplay) {
       setAutoplay(autoplay === "true");
@@ -92,6 +100,14 @@ export default function Home() {
       playVideo1SecontAfterLoadViaScriptHandler();
     }
   }, []);
+
+  const controlsCheckBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setControls(e.target.checked);
+    localStorage.setItem(
+      "controls",
+      e.target.checked === true ? "true" : "false"
+    );
+  };
 
   const autoplayCheckBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAutoplay(e.target.checked);
@@ -188,6 +204,7 @@ export default function Home() {
 
         <CContainer className="video-container">
           <video
+            controls={controls}
             autoPlay={autoplay}
             muted={muted}
             loop={loop}
@@ -203,6 +220,12 @@ export default function Home() {
         </CContainer>
 
         <CContainer className="options-container" sm>
+          <CFormCheck
+            type="checkbox"
+            label="controls"
+            checked={controls}
+            onChange={controlsCheckBoxHandler}
+          />
           <CFormCheck
             type="checkbox"
             label="autoplay"
@@ -261,95 +284,4 @@ export default function Home() {
       </CContainer>
     </main>
   );
-}
-
-{
-  /* (() => {
-            const element = (
-              <video
-                className={`video${idx}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-                controls={false}
-                autoPlay
-                muted
-                loop
-                playsInline
-                webkit-playsinline="true"
-                x-webkit-airplay="true"
-                x5-video-player-type="h5"
-                x5-video-player-fullscreen="true"
-                x5-video-orientation="portrait"
-                poster={item.videoPoster}
-              >
-                <source src={item.slideImage} type="video/mp4" />
-              </video>
-            );
-            setTimeout(() => {
-              function doPlay() {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (window as any).WeixinJSBridge.invoke(
-                  "getNetworkType",
-                  {},
-                  function () {
-                    const $video: JQuery<HTMLVideoElement> = $(
-                      `.video${idx}`
-                    );
-                    $video[0].play();
-                    console.log("invoke getNetworkType");
-
-                    setTimeout(() => {
-                      const isVideoPlaying =
-                        $video[0].currentTime > 0 &&
-                        !$video[0].paused &&
-                        !$video[0].ended &&
-                        $video[0].readyState > 2;
-                      console.log(isVideoPlaying);
-                      if (!isVideoPlaying) {
-                        $video[0].play();
-                      }
-                    }, 500);
-                  }
-                );
-              }
-
-              console.log("start");
-
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              if ((window as any).WeixinJSBridge) {
-                console.log("start2");
-                doPlay();
-              } else {
-                console.log("start3");
-                document.addEventListener(
-                  "WeixinJSBridgeReady",
-                  function () {
-                    doPlay();
-                  },
-                  false
-                );
-
-                const $video: JQuery<HTMLVideoElement> = $(`.video${idx}`);
-                $video[0].play();
-
-                setTimeout(() => {
-                  setTimeout(() => {
-                    const isVideoPlaying =
-                      $video[0].currentTime > 0 &&
-                      !$video[0].paused &&
-                      !$video[0].ended &&
-                      $video[0].readyState > 2;
-                    if (!isVideoPlaying) {
-                      $video[0].play();
-                    }
-                  }, 500);
-                }, 500);
-              }
-            }, 500);
-
-            return <>{element}</>;
-          }), */
 }

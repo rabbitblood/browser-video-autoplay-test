@@ -10,20 +10,27 @@ export default function WechatVideoAutoPlayExample() {
   useEffect(() => {
     // vanilla js code
     const video: any = document.querySelectorAll(".video");
-    console.log(video);
+    logPageDebug("video: " + video);
 
+    //play video
     function doPlay() {
-      (window as any).WeixinJSBridge?.invoke("getNetworkType", {}, function () {
-        const isVideoPlaying =
-          video[0].currentTime > 0 &&
-          !video[0].paused &&
-          !video[0].ended &&
-          video[0].readyState > 2;
-        logPageDebug("isVideoPlaying: " + isVideoPlaying);
-        if (!isVideoPlaying) {
-          video[0].play();
+      //getNetworkType is a wechat jsbridge api
+      (window as any).WeixinJSBridge?.invoke(
+        "getNetworkType",
+        {},
+        function (e: any) {
+          logPageDebug("getNetworkType: " + JSON.stringify(e));
+          const isVideoPlaying =
+            video[0].currentTime > 0 &&
+            !video[0].paused &&
+            !video[0].ended &&
+            video[0].readyState > 2;
+          logPageDebug("isVideoPlaying: " + isVideoPlaying);
+          if (!isVideoPlaying) {
+            video[0].play();
+          }
         }
-      });
+      );
     }
 
     //check if WeixinJSBridge exist and is ready
@@ -33,7 +40,7 @@ export default function WechatVideoAutoPlayExample() {
     } else {
       logPageDebug("WeixinJSBridge not found");
       logPageDebug(
-        "add event listener for WeixinJSBridgeReady incase it's not ready yet"
+        "add event listener for WeixinJSBridgeReady in case it's not ready yet"
       );
       document.addEventListener(
         "WeixinJSBridgeReady",
@@ -64,12 +71,33 @@ export default function WechatVideoAutoPlayExample() {
             playsInline
             webkit-playsinline="true"
             x-webkit-airplay="true"
-            //x5-video-player-fullscreen="true"
             x5-video-orientation="true"
             className="video"
             src={TEST_VIDEO_URL}
             poster={POSTER_URL}
           ></video>
+        </CContainer>
+        <CContainer className="code-container">
+          <pre>
+            {`
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            webkit-playsinline="true"
+            x-webkit-airplay="true"
+            x5-video-orientation="true"
+            className="video"
+            src={TEST_VIDEO_URL}
+            poster={POSTER_URL}
+          ></video>
+          <script>
+
+          </script>
+
+            `}
+          </pre>
         </CContainer>
         <h2>debug logs:</h2>
         <div ref={debuglogs}></div>
