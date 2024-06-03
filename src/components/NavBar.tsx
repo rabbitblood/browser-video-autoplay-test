@@ -9,6 +9,7 @@ import {
   CDropdownToggle,
   CNavItem,
   CNavLink,
+  CNavTitle,
   CNavbar,
   CNavbarBrand,
   CNavbarNav,
@@ -22,7 +23,7 @@ export default function NavBar() {
     <>
       <CNavbar expand="lg" className="bg-body-tertiary">
         <CContainer fluid>
-          <CNavbarBrand href="#">Browser Video AutoPlay Test</CNavbarBrand>
+          <CNavbarBrand href="/ ">Browser Video AutoPlay Test</CNavbarBrand>
           <CNavbarToggler
             aria-label="Toggle navigation"
             aria-expanded={visible}
@@ -34,7 +35,9 @@ export default function NavBar() {
               <CDropdown variant="nav-item" popper={false}>
                 <CDropdownToggle>Success Example</CDropdownToggle>
                 <CDropdownMenu>
-                  <CDropdownItem href="#">Action</CDropdownItem>
+                  <CDropdownItem href="/test-scenario/normal-autoplay">
+                    Normal Auto Play
+                  </CDropdownItem>
                   <CDropdownItem href="#">Another action</CDropdownItem>
                   <CDropdownDivider />
                   <CDropdownItem href="#">Something else here</CDropdownItem>
@@ -43,9 +46,10 @@ export default function NavBar() {
               <CDropdown variant="nav-item" popper={false}>
                 <CDropdownToggle>Scenarios</CDropdownToggle>
                 <CDropdownMenu>
-                  <CDropdownItem href="#">Action</CDropdownItem>
+                  <CDropdownItem href="/test-scenario/normal-autoplay">
+                    Normal Auto Play
+                  </CDropdownItem>
                   <CDropdownItem href="#">Another action</CDropdownItem>
-                  <CDropdownDivider />
                   <CDropdownItem href="#">Something else here</CDropdownItem>
                 </CDropdownMenu>
               </CDropdown>
