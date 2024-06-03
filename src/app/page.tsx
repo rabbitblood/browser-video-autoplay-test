@@ -199,7 +199,7 @@ export default function Home() {
 
   return (
     <main>
-      <CContainer>
+      <CContainer className="mb-5">
         <h1 className="title">HTML video autoplay test ground</h1>
 
         <CContainer className="video-container">
