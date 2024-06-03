@@ -41,16 +41,16 @@ export default function WechatVideoAutoPlayExample() {
 
     // check if WeixinJSBridge exist and is ready
     // WeixinJSBridge is a global object in wechat browser
-    // it's used to interact with wechat browser
-    //the reason we use it here is that we need to trigger the video play action in a user gesture
-    //otherwise the video will not play
+    // the reason we use it here is because we need to
+    // trigger video play action in WeixinJSBridge invoke callback
+    // otherwise the video will not play
     if ((window as any).WeixinJSBridge) {
       logPageDebug("WeixinJSBridge found");
       doPlay();
     } else {
       logPageDebug("WeixinJSBridge not found");
       // add event listener for WeixinJSBridgeReady
-      // in case it's not ready yet, this is mainly for android devices
+      // in case it's not ready yet
       document.addEventListener(
         "WeixinJSBridgeReady",
         function () {
@@ -137,9 +137,9 @@ export default function WechatVideoAutoPlayExample() {
 
   // check if WeixinJSBridge exist and is ready
   // WeixinJSBridge is a global object in wechat browser
-  // it's used to interact with wechat browser
-  //the reason we use it here is that we need to trigger the video play action in a user gesture
-  //otherwise the video will not play
+  // the reason we use it here is because we need to
+  // trigger video play action in WeixinJSBridge invoke callback
+  // otherwise the video will not play
   if ((window as any).WeixinJSBridge) {
     doPlay();
   } else {

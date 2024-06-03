@@ -19,6 +19,7 @@ this project is inspired when I have struggled to make the video auto play in We
 2.test with local server
 
 ```bash
+npm install
 npm run dev
 ```
 
