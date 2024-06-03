@@ -9,25 +9,35 @@ export default function WechatVideoAutoPlayExample() {
 
   useEffect(() => {
     // vanilla js code
-    const video: any = document.querySelectorAll(".video");
-    logPageDebug("video: " + video);
+    // get first dom element with class video
+    const video: any = document.querySelectorAll(".video")[0];
+    if (!video) {
+      logPageDebug("video not found");
+      return;
+    }
 
     //play video
     function doPlay() {
-      //getNetworkType is a wechat jsbridge api
+      //getNetworkType is a wechat jsbridge api to get network type
+      //the reason we use it here is that we need to trigger the video play action in a user gesture
+      //otherwise the video will not play
       (window as any).WeixinJSBridge?.invoke(
         "getNetworkType",
         {},
         function (e: any) {
           logPageDebug("getNetworkType: " + JSON.stringify(e));
+
+          //check if video is already playing
           const isVideoPlaying =
-            video[0].currentTime > 0 &&
-            !video[0].paused &&
-            !video[0].ended &&
-            video[0].readyState > 2;
+            video.currentTime > 0 &&
+            !video.paused &&
+            !video.ended &&
+            video.readyState > 2;
           logPageDebug("isVideoPlaying: " + isVideoPlaying);
+
+          //if video is not playing, play it
           if (!isVideoPlaying) {
-            video[0].play();
+            video.play();
           }
         }
       );
@@ -78,7 +88,7 @@ export default function WechatVideoAutoPlayExample() {
           ></video>
         </CContainer>
         <CContainer className="code-container">
-          <pre>
+          <code style={{ whiteSpace: "pre" }}>
             {`
           <video
             autoPlay
@@ -97,7 +107,7 @@ export default function WechatVideoAutoPlayExample() {
           </script>
 
             `}
-          </pre>
+          </code>
         </CContainer>
         <h2>debug logs:</h2>
         <div ref={debuglogs}></div>
