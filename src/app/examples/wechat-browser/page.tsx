@@ -21,26 +21,39 @@ export default function WechatVideoAutoPlayExample() {
       //getNetworkType is a wechat jsbridge api to get network type
       //the reason we use it here is that we need to trigger the video play action in a user gesture
       //otherwise the video will not play
-      (window as any).WeixinJSBridge?.invoke(
-        "getNetworkType",
-        {},
-        function (e: any) {
-          logPageDebug("getNetworkType: " + JSON.stringify(e));
+      // (window as any).WeixinJSBridge?.invoke(
+      //   "getNetworkType",
+      //   {},
+      //   function (e: any) {
+      //     logPageDebug("getNetworkType: " + JSON.stringify(e));
 
-          //check if video is already playing
-          const isVideoPlaying =
-            video.currentTime > 0 &&
-            !video.paused &&
-            !video.ended &&
-            video.readyState > 2;
-          logPageDebug("isVideoPlaying: " + isVideoPlaying);
+      //     //check if video is already playing
+      //     const isVideoPlaying =
+      //       video.currentTime > 0 &&
+      //       !video.paused &&
+      //       !video.ended &&
+      //       video.readyState > 2;
+      //     logPageDebug("isVideoPlaying: " + isVideoPlaying);
 
-          //if video is not playing, play it
-          if (!isVideoPlaying) {
-            video.play();
-          }
-        }
-      );
+      //     //if video is not playing, play it
+      //     if (!isVideoPlaying) {
+      //       video.play();
+      //     }
+      //   }
+      // );
+
+      //check if video is already playing
+      const isVideoPlaying =
+        video.currentTime > 0 &&
+        !video.paused &&
+        !video.ended &&
+        video.readyState > 2;
+      logPageDebug("isVideoPlaying: " + isVideoPlaying);
+
+      //if video is not playing, play it
+      if (!isVideoPlaying) {
+        video.play();
+      }
     }
 
     //check if WeixinJSBridge exist and is ready
