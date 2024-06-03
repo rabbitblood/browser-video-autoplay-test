@@ -1,8 +1,7 @@
 "use client";
-import { CContainer, CFormCheck } from "@coreui/react";
+import { CContainer } from "@coreui/react";
 import { TEST_VIDEO_URL, POSTER_URL } from "@/app/const";
 import { useEffect, useRef } from "react";
-import { log } from "console";
 
 export default function WechatVideoAutoPlayExample() {
   const debuglogs = useRef<HTMLDivElement>(null);
