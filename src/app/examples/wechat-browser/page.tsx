@@ -38,19 +38,6 @@ export default function WechatVideoAutoPlayExample() {
           }
         }
       );
-
-      //check if video is already playing
-      const isVideoPlaying =
-        video.currentTime > 0 &&
-        !video.paused &&
-        !video.ended &&
-        video.readyState > 2;
-      logPageDebug("isVideoPlaying: " + isVideoPlaying);
-
-      //if video is not playing, play it
-      if (!isVideoPlaying) {
-        video.play();
-      }
     }
 
     // check if WeixinJSBridge exist and is ready
@@ -63,9 +50,8 @@ export default function WechatVideoAutoPlayExample() {
       doPlay();
     } else {
       logPageDebug("WeixinJSBridge not found");
-      logPageDebug(
-        "add event listener for WeixinJSBridgeReady in case it's not ready yet"
-      );
+      // add event listener for WeixinJSBridgeReady
+      // in case it's not ready yet, this is mainly for android devices
       document.addEventListener(
         "WeixinJSBridgeReady",
         function () {
@@ -97,7 +83,7 @@ export default function WechatVideoAutoPlayExample() {
             playsInline
             webkit-playsinline="true"
             x-webkit-airplay="true"
-            x5-video-orientation="true"
+            x5-video-player-type="h5"
             className="video"
             src={TEST_VIDEO_URL}
             poster={POSTER_URL}
@@ -113,7 +99,7 @@ export default function WechatVideoAutoPlayExample() {
   playsInline
   webkit-playsinline="true"
   x-webkit-airplay="true"
-  x5-video-orientation="true"
+  x5-video-player-type="h5"
   className="video"
   src={TEST_VIDEO_URL}
   poster={POSTER_URL}
@@ -148,18 +134,6 @@ export default function WechatVideoAutoPlayExample() {
         }
       }
     );
-
-    //check if video is already playing
-    const isVideoPlaying =
-      video.currentTime > 0 &&
-      !video.paused &&
-      !video.ended &&
-      video.readyState > 2;
-
-    //if video is not playing, play it
-    if (!isVideoPlaying) {
-      video.play();
-    }
   }
 
   // check if WeixinJSBridge exist and is ready
@@ -171,7 +145,7 @@ export default function WechatVideoAutoPlayExample() {
     doPlay();
   } else {
     // add event listener for WeixinJSBridgeReady 
-    // in case it's not ready yet
+    // in case it's not ready yet, this is mainly for android devices
     logPageDebug(
       "add event listener for WeixinJSBridgeReady in case it's not ready yet"
     );
