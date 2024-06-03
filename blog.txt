@@ -1,0 +1,158 @@
+Mobile Wechat Browser AutoPlay Inline Video
+
+https://www.cnblogs.com/angel648/p/16630562.html
+
+Long story short, to make video autoplay in wechat browser we need to set the correct attribute first, and call wechat browser script to invoke video play.
+
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  webkit-playsinline="true"
+  x-webkit-airplay="true"
+  x5-video-player-type="h5"
+  src={TEST_VIDEO_URL}
+  poster={POSTER_URL}
+></video>
+
+<script>
+  // using typescript, Next.js
+  // get first dom element with class video
+  const video: any = document.querySelectorAll(".video")[0];
+  if (!video) {
+    return;
+  }
+
+  //play video function
+  function doPlay() {
+    //getNetworkType is a wechat jsbridge api to get network type
+    //we do not need to do anything with the result, just call it to trigger the video play action
+    (window as any).WeixinJSBridge?.invoke(
+      "getNetworkType",
+      {},
+      function (e: any) {
+        //check if video is already playing
+        const isVideoPlaying =
+          video.currentTime > 0 &&
+          !video.paused &&
+          !video.ended &&
+          video.readyState > 2;
+
+        //if video is not playing, play it
+        if (!isVideoPlaying) {
+          video.play();
+        }
+      }
+    );
+  }
+
+  // check if WeixinJSBridge exist and is ready
+  // WeixinJSBridge is a global object in wechat browser
+  // the reason we use it here is because we need to
+  // trigger video play action in WeixinJSBridge invoke callback
+  // otherwise the video will not play
+  if ((window as any).WeixinJSBridge) {
+    doPlay();
+  } else {
+    // add event listener for WeixinJSBridgeReady 
+    // in case it's not ready yet
+    logPageDebug(
+      "add event listener for WeixinJSBridgeReady in case it's not ready yet"
+    );
+    document.addEventListener(
+      "WeixinJSBridgeReady",
+      function () {
+        doPlay();
+      },
+      false
+    );
+  } 
+</script>
+
+
+
+To dive deeper into the details, we need to understand the following:
+
+1. Wechat browser does not allow video autoplay by default, we need to set the correct attribute to enable it.
+2. script calling video play does not work in wechat browser, we need to use WeixinJSBridge invoke callback to trigger video play action.
+
+so lets break the code down:
+first we will set the correct attribute for video tag to enable autoplay:
+
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  webkit-playsinline="true"
+  x-webkit-airplay="true"
+  x5-video-player-type="h5"
+  src={TEST_VIDEO_URL}
+  poster={POSTER_URL}
+></video>
+
+the following part will enable video autoplay in normal desktop browser
+autoPlay: enable video autoplay
+muted: mute the video
+
+but it does not work in mobile browsers, it will eveb pop up native video player in some cases, so we need to add the following attributes to enable autoplay in mobile browsers:
+playsInline: enable video autoplay in mobile browsers
+
+now that its working in mobile browsers, in wechat browser it still does not autoplay inline,
+however when you navigate through pages and come back to the page with video, it will autoplay inline, 
+this could be due to wechat browser require user interaction to play video, 
+so we will add some more attributes, and call wechat browser script to invoke video play action:
+// wechat browser uses x5 browser engine, which is a fork of blink(webkit fork)
+// these attributes are required to enable video autoplay in wechat browser
+webkit-playsinline="true"
+x-webkit-airplay="true"
+x5-video-player-type="h5"
+
+and now we will call wechat browser script to invoke video play action:
+1. get the first video element with class video since we only have one video element in the page
+  const video: any = document.querySelectorAll(".video")[0];
+  if (!video) {
+    return;
+  }
+2. set up a function to play video
+  function doPlay() {
+    //getNetworkType is a wechat jsbridge api to get network type
+    //we do not need to do anything with the result, just call it to trigger the video play action
+    (window as any).WeixinJSBridge?.invoke(
+      "getNetworkType",
+      {},
+      function (e: any) {
+        //check if video is already playing
+        const isVideoPlaying =
+          video.currentTime > 0 &&
+          !video.paused &&
+          !video.ended &&
+          video.readyState > 2;
+
+        //if video is not playing, play it
+        if (!isVideoPlaying) {
+          video.play();
+        }
+      }
+    );
+  }
+3. check if WeixinJSBridge exist and is ready
+    if ((window as any).WeixinJSBridge) {
+        doPlay();
+    } else {
+        // add event listener for WeixinJSBridgeReady 
+        // in case it's not ready yet
+        logPageDebug(
+        "add event listener for WeixinJSBridgeReady in case it's not ready yet"
+        );
+        document.addEventListener(
+        "WeixinJSBridgeReady",
+        function () {
+            doPlay();
+        },
+        false
+        );
+    }
+
+and that's it, now the video will autoplay inline in wechat browser.
