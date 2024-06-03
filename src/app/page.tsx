@@ -1,27 +1,16 @@
 "use client";
-import {
-  CContainer,
-  CFormCheck,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from "@coreui/react";
+import { CContainer, CFormCheck } from "@coreui/react";
 import { useEffect, useState } from "react";
+import { TEST_VIDEO_URL, POSTER_URL } from "./const";
 
 export default function Home() {
-  const TEST_VIDEO_URL =
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-
   const [autoplay, setAutoplay] = useState(true);
   const [muted, setMuted] = useState(true);
   const [loop, setLoop] = useState(true);
   const [playsInline, setPlaysInline] = useState(true);
   const [webkitPlaysInline, setWebkitPlaysInline] = useState(true);
   const [xWebkitAirplay, setXWebkitAirplay] = useState(true);
-  const [x5VideoPlayerType, setX5VideoPlayerType] = useState(true);
+  //const [x5VideoPlayerType, setX5VideoPlayerType] = useState(true);
   const [x5VideoPlayerFullscreen, setX5VideoPlayerFullscreen] = useState(true);
   const [x5VideoOrientation, setX5VideoOrientation] = useState(true);
   const [
@@ -70,13 +59,6 @@ export default function Home() {
       setXWebkitAirplay(xWebkitAirplay === "true");
     } else {
       setXWebkitAirplay(true);
-    }
-
-    const x5VideoPlayerType = localStorage.getItem("x5VideoPlayerType");
-    if (x5VideoPlayerType) {
-      setX5VideoPlayerType(x5VideoPlayerType === "true");
-    } else {
-      setX5VideoPlayerType(true);
     }
 
     const x5VideoPlayerFullscreen = localStorage.getItem(
@@ -159,16 +141,6 @@ export default function Home() {
     );
   };
 
-  const x5VideoPlayerTypeCheckBoxHandler = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setX5VideoPlayerType(e.target.checked);
-    localStorage.setItem(
-      "x5VideoPlayerType",
-      e.target.checked === true ? "true" : "false"
-    );
-  };
-
   const x5VideoPlayerFullscreenCheckBoxHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -203,6 +175,7 @@ export default function Home() {
     setTimeout(() => {
       const video = document.querySelector("video");
       if (video) {
+        console.log("play video 1 secont after load via script");
         video.play();
       }
     }, 1000);
@@ -221,12 +194,11 @@ export default function Home() {
             playsInline={playsInline}
             webkit-playsinline={String(webkitPlaysInline)}
             x-webkit-airplay={String(xWebkitAirplay)}
-            x5-video-player-type={String(x5VideoPlayerType)}
             x5-video-player-fullscreen={String(x5VideoPlayerFullscreen)}
             x5-video-orientation={String(x5VideoOrientation)}
             className="video"
             src={TEST_VIDEO_URL}
-            poster="https://via.placeholder.com/1920x1080"
+            poster={POSTER_URL}
           ></video>
         </CContainer>
 
@@ -266,12 +238,6 @@ export default function Home() {
             label="x-webkit-airplay"
             checked={xWebkitAirplay}
             onChange={xWebkitAirplayCheckBoxHandler}
-          />
-          <CFormCheck
-            type="checkbox"
-            label="x5-video-player-type"
-            checked={x5VideoPlayerType}
-            onChange={x5VideoPlayerTypeCheckBoxHandler}
           />
           <CFormCheck
             type="checkbox"
